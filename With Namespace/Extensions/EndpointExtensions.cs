@@ -1,8 +1,4 @@
-﻿using System.Reflection;
-using Asp.Versioning;
-using Asp.Versioning.Builder;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using MinimalEndpoints.Abstractions;
+﻿using MinimalEndpoints.Abstractions;
 
 namespace MinimalEndpoints.Extensions;
 
