@@ -15,11 +15,11 @@ public static class EndpointExtensions
         foreach (IEndpoint endpoint in endpoints)
         {
             var endpointNamespace = endpoint.GetType().Namespace?.Split(".");
-            var version = endpointNamespace?[2].ToLower();
+            var version = endpointNamespace?[2];
             var GroupNameForUrl = string.Join("/", endpointNamespace[3..]);
             var GroupNameForTagName = string.Join(".", endpointNamespace[3..]);
 
-            var group = app.MapGroup($"api/{version}/{GroupNameForUrl}")
+            var group = app.MapGroup($"api/{version}/{GroupNameForUrl}".ToLower())
                 .WithTags($"{version} {GroupNameForTagName}");
 
             endpoint.MapEndpoint(group);
