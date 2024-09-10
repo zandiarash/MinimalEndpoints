@@ -29,26 +29,15 @@ public static class EndpointExtensions
 
         foreach (IEndpoint endpoint in endpoints)
         {
-            if (endpoint is IEndpoint myEndpoint)
-            {
-                var endpointNamespace = endpoint.GetType().Namespace.Split(".");
-                var version =  endpointNamespace[2].ToLower();
-                var GroupNameForUrl =string.Join("/",endpointNamespace[3..]);
-                var GroupNameForTagname =string.Join(".",endpointNamespace[3..]);
+            var endpointNamespace = endpoint.GetType().Namespace?.Split(".");
+            var version = endpointNamespace?[2].ToLower();
+            var GroupNameForUrl = string.Join("/", endpointNamespace[3..]);
+            var GroupNameForTagName = string.Join(".", endpointNamespace[3..]);
 
-                ApiVersionSet apiVersionSet = app.NewApiVersionSet()
-                   .HasApiVersion(new ApiVersion(1))
-                   .ReportApiVersions()
-                   .Build();
+            var group = builder.MapGroup($"api/{version}/{GroupNameForUrl}")
+                .WithTags($"{version} {GroupNameForTagName}");
 
-                // Use the API version from the endpoint
-                var group = builder.MapGroup($"api/{version}/{GroupNameForUrl}")
-                    .WithApiVersionSet(apiVersionSet)
-                    .WithTags($"{version}-{GroupNameForTagname}");
-
-                // Map the endpoint to the group with versioning
-                endpoint.MapEndpoint(group);
-            }
+            endpoint.MapEndpoint(group);
         }
 
         return app;
