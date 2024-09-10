@@ -2,7 +2,7 @@
 
 namespace MinimalEndpoints.Endpoints.V2.Category.SubCategory;
 
-public class CategoriesGet : IEndpoint
+public class Get : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
