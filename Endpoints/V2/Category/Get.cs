@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using MinimalEndpoints.Abstractions;
 
-namespace MinimalEndpoints.Endpoints.V2.User;
+namespace MinimalEndpoints.Endpoints.V2.Category;
 
 public class CategoriesGet : IEndpoint
 {

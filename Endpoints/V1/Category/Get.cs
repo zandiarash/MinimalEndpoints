@@ -1,9 +1,9 @@
 ﻿using Asp.Versioning;
 using MinimalEndpoints.Abstractions;
 
-namespace MinimalEndpoints.Endpoints.V1.User;
+namespace MinimalEndpoints.Endpoints.V1.Category;
 
-public class CategoriesGet : IEndpoint
+public class Get : IEndpoint
 {
     public string GroupName => "Categories";
     public ApiVersion ApiVersion => new ApiVersion(1, 0); // Specify API version
