@@ -41,10 +41,15 @@ public static class EndpointExtensions
         {
             if (endpoint is IEndpoint myEndpoint && myEndpoint.GroupName != null)
             {
+                var endpointNamespace = endpoint.GetType().Namespace.Split(".");
+                var version =  endpointNamespace[2].ToLower();
+                var GroupNameForUrl =string.Join("/",endpointNamespace[3..]);
+                var GroupNameForTagname =string.Join(".",endpointNamespace[3..]);
+
                 // Use the API version from the endpoint
-                var group = builder.MapGroup($"api/v{endpoint.ApiVersion.MajorVersion}/{endpoint.GroupName}")
+                var group = builder.MapGroup($"api/{version}/{GroupNameForUrl}")
                     // .WithApiVersionSet(endpoint.ApiVersion.ToString())
-                    .WithTags($"v{endpoint.ApiVersion.MajorVersion}-{endpoint.TagName}");
+                    .WithTags($"{version}-{GroupNameForTagname}");
 
                 // Map the endpoint to the group with versioning
                 endpoint.MapEndpoint(group);
