@@ -17,18 +17,7 @@ builder.Services.AddApiVersioning(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
-builder.Services.AddEndpoints(typeof(Program).Assembly);
-
 WebApplication app = builder.Build();
-
-//ApiVersionSet apiVersionSet = app.NewApiVersionSet()
-//    .HasApiVersion(new ApiVersion(1))
-//    .ReportApiVersions()
-//    .Build();
-//RouteGroupBuilder versionedGroup = app
-//    .MapGroup("api/v{version:apiVersion}")
-//    .WithApiVersionSet(apiVersionSet).WithTags("apiVersionSet.Name");
-//app.MapEndpoints(versionedGroup);
 
 app.MapEndpoints();
 
