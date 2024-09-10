@@ -22,16 +22,6 @@ public static class EndpointExtensions
         return services;
     }
 
-    public static IEndpointRouteBuilder MapEndpointWithTags(this RouteGroupBuilder builder, IEndpoint endpoint)
-    {
-        endpoint.MapEndpoint(builder);
-        if (!string.IsNullOrEmpty(endpoint.TagName))
-        {
-            builder.WithTags(endpoint.TagName);
-        }
-        return builder;
-    }
-
     public static IApplicationBuilder MapEndpoints(this WebApplication app, RouteGroupBuilder? routeGroupBuilder = null)
     {
         IEnumerable<IEndpoint> endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
@@ -39,16 +29,21 @@ public static class EndpointExtensions
 
         foreach (IEndpoint endpoint in endpoints)
         {
-            if (endpoint is IEndpoint myEndpoint && myEndpoint.GroupName != null)
+            if (endpoint is IEndpoint myEndpoint)
             {
                 var endpointNamespace = endpoint.GetType().Namespace.Split(".");
                 var version =  endpointNamespace[2].ToLower();
                 var GroupNameForUrl =string.Join("/",endpointNamespace[3..]);
                 var GroupNameForTagname =string.Join(".",endpointNamespace[3..]);
 
+                ApiVersionSet apiVersionSet = app.NewApiVersionSet()
+                   .HasApiVersion(new ApiVersion(1))
+                   .ReportApiVersions()
+                   .Build();
+
                 // Use the API version from the endpoint
                 var group = builder.MapGroup($"api/{version}/{GroupNameForUrl}")
-                    // .WithApiVersionSet(endpoint.ApiVersion.ToString())
+                    .WithApiVersionSet(apiVersionSet)
                     .WithTags($"{version}-{GroupNameForTagname}");
 
                 // Map the endpoint to the group with versioning
